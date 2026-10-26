@@ -1,0 +1,18 @@
+{
+  "verified_at": "2026-10-26T03:38:39.595697+00:00",
+  "search": "pass: 10 rows",
+  "detail": "pass: one case, requested court/case matched",
+  "pagination": "pass: two pages, 20 unique objects, next_page=3",
+  "filters": "pass: building sale items (associated land retained), date, appraisal range, minimum range, fail-count range; 10 rows",
+  "request_count_including_init": 9,
+  "court": "B000210",
+  "date_range": [
+    "2026-10-26",
+    "2026-11-30"
+  ],
+  "full_collection": "unverified",
+  "all_courts": "unverified",
+  "region_and_subusage_filters": "unverified",
+  "reason": "제한된 법원·기간의 검증이며 전국·전체수집·지역/세부용도 조건의 실조회는 미검증.",
+  "required_live_checks_passed": true
+}

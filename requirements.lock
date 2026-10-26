@@ -1,0 +1,12 @@
+# Python 3.11/3.12 공통 런타임·빌드 의존성. 전역 설치 불필요.
+anyio==4.15.1
+certifi==2026.10.23
+et-xmlfile==2.0.0
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+idna==3.20
+openpyxl==3.1.5
+typing-extensions==4.16.0
+setuptools==80.9.0
+wheel==0.45.1

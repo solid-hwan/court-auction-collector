@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "court-auction": {
+      "command": "court-auction-mcp",
+      "args": ["serve"]
+    }
+  }
+}

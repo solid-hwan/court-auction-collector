@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "court-auction-mcp"
+version = "0.1.0"
+description = "법원경매 데이터 MCP — 부동산 검색·수집·재개·Excel 출력"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "SIONLAB"}]
+readme = "README.md"
+dependencies = ["httpx==0.28.1", "openpyxl==3.1.5"]
+
+[project.scripts]
+court-auction-mcp = "court_auction_mcp.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+court_auction_mcp = ["*.json"]

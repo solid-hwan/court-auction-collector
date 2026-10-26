@@ -1,0 +1,37 @@
+[
+  {
+    "project": "kk_real_estate",
+    "file": "src/market/court_common.py",
+    "base_commit": "0847a9f5053a616ed6e6ee9562844c72ca203883",
+    "sha256": "0601dcf49952a3c18a3a33a2a15aaae56936463029a8528db526e6e17fc2147d",
+    "dirty": true
+  },
+  {
+    "project": "kk_real_estate",
+    "file": "src/market/court_auction.py",
+    "base_commit": "0847a9f5053a616ed6e6ee9562844c72ca203883",
+    "sha256": "cfe5d931e47e32e33ea0d7c5f291063004f9884baecd1ab17813422d9ef1d6b1",
+    "dirty": false
+  },
+  {
+    "project": "kk_real_estate",
+    "file": "src/market/court_detail.py",
+    "base_commit": "0847a9f5053a616ed6e6ee9562844c72ca203883",
+    "sha256": "aa598dbf8fac0154cb71cce07e3bd9fac2f1621ae7c22ac4fce2c1b348e182f6",
+    "dirty": false
+  },
+  {
+    "project": "aution_Real_estate",
+    "file": "supabase/functions/_shared/court-search.ts",
+    "base_commit": "a2d1d892fae88d9bfb8d7e989600134b72c89f34",
+    "sha256": "524153c6df3b4e1a06fcceead0e3bed7dba995e6860dfd6a7e7b45f3a1f58dfc",
+    "dirty": true
+  },
+  {
+    "project": "aution_Real_estate",
+    "file": "supabase/functions/_shared/court-detail.ts",
+    "base_commit": "a2d1d892fae88d9bfb8d7e989600134b72c89f34",
+    "sha256": "43769b5c65fdfae6ae390f25a049b9425b0ecea1c95d94fccb7db5de8d5fc855",
+    "dirty": false
+  }
+]
