@@ -38,7 +38,7 @@ class AuctionService:
 
     def coverage(self):
         live=json.loads(files(__package__).joinpath('live_verification.json').read_text('utf-8'))
-        return {'ok':True,'version':'0.2.0','integration':'unofficial_internal_json','supported':['codes','search','detail_15A','collect','status','export_jsonl_csv_xlsx','resume','district_codes_live','region_folders','guide'], 'excluded':['15B','photos','documents','vehicles','onbid','rights_analysis','investment_advice','bidding'], 'minimum_interval_seconds':3,'default_max_calls':10,'live_verification':live}
+        return {'ok':True,'version':'0.2.1','integration':'unofficial_internal_json','supported':['codes','search','detail_15A','collect','status','export_jsonl_csv_xlsx','resume','district_codes_live','region_folders','guide'], 'excluded':['15B','photos','documents','vehicles','onbid','rights_analysis','investment_advice','bidding'], 'minimum_interval_seconds':3,'default_max_calls':10,'live_verification':live}
 
     def _single(self, kind, q, max_calls, operation):
         positive(max_calls,'max_calls')

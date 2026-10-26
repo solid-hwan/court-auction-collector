@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "court-auction-mcp"
-version = "0.2.0"
-description = "법원경매 데이터 MCP — 부동산 검색·수집·재개·Excel 출력"
+version = "0.2.1"
+description = "법원경매 데이터 수집기 — 부동산 검색·수집·재개·Excel 출력"
 requires-python = ">=3.11"
 license = "MIT"
 authors = [{name = "SIONLAB"}]

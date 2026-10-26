@@ -1,8 +1,8 @@
-# 법원경매 데이터 MCP
+# 법원경매 데이터 수집기
 
-법원경매 부동산을 조건으로 찾고, 상세를 확인하고, 수집한 자료를 Excel·CSV·JSONL로 저장합니다. **SIONLAB 제작 · MIT · Python 3.11+ · v0.2.0**
+법원경매 부동산을 조건으로 찾고, 상세를 확인하고, 수집한 자료를 Excel·CSV·JSONL로 저장합니다. **SIONLAB 제작 · MIT · Python 3.11+ · v0.2.1**
 
-유료 AI·API 키·Supabase·개인 작업 환경 없이 CLI와 Python으로 실행할 수 있습니다. MCP를 연결하면 같은 기능을 AI 클라이언트에서 사용할 수 있습니다.
+유료 AI·API 키·Supabase·개인 작업 환경 없이 CLI와 Python으로 실행할 수 있습니다. 원하는 지역을 선택해 데이터를 수집하고 파일로 받을 수 있습니다.
 
 ```mermaid
 flowchart LR
@@ -13,10 +13,10 @@ flowchart LR
 
 ## 설치
 
-[GitHub 릴리스](https://github.com/solid-hwan/court-auction-mcp/releases/tag/v0.2.0)의 ZIP과 SHA-256 파일을 받아 해시를 확인하고 압축을 풉니다. PyPI 배포는 하지 않습니다.
+[GitHub 릴리스](https://github.com/solid-hwan/court-auction-mcp/releases/tag/v0.2.1)의 ZIP과 SHA-256 파일을 받아 해시를 확인하고 압축을 풉니다. PyPI 배포는 하지 않습니다.
 
 ```bash
-cd court-auction-mcp-0.2.0
+cd court-auction-mcp-0.2.1
 python3 setup-lab.py
 .venv/bin/python -m court_auction_mcp coverage
 .venv/bin/court-auction-mcp codes

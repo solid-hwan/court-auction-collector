@@ -19,7 +19,7 @@ class ReleaseTests(unittest.TestCase):
             with zipfile.ZipFile(a['archive']) as z:
                 names=z.namelist()
                 self.assertFalse(any(('/.venv/' in n or '__pycache__' in n or '.sqlite' in n or '/.git/' in n or n.endswith('.env')) for n in names))
-                prefix='court-auction-mcp-0.2.0/'
+                prefix='court-auction-mcp-0.2.1/'
                 manifest=json.loads(z.read(prefix+'SOURCE_MANIFEST.json'))
                 for name,digest in manifest['files'].items():
                     self.assertEqual(hashlib.sha256(z.read(prefix+name)).hexdigest(),digest)

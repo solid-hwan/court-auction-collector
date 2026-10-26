@@ -7,7 +7,7 @@ from .models import QUERY_FIELDS
 
 
 def parser():
-    p=argparse.ArgumentParser(prog='court-auction-mcp',description='법원경매 부동산 검색·수집·Excel 출력 (비공식 연동)')
+    p=argparse.ArgumentParser(prog='court-auction-mcp',description='법원경매 데이터 수집기 — 원하는 지역의 경매 물건을 검색하고 Excel로 저장 (비공식 연동)')
     p.add_argument('--db',help='작업 SQLite 경로; 기본 ~/.court-auction-mcp/jobs.sqlite3')
     p.add_argument('--export-root',help='내보내기 루트; 기본 ./output')
     sub=p.add_subparsers(dest='command',required=True)

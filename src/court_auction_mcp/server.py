@@ -70,7 +70,7 @@ def serve(service, stdin=None, stdout=None):
                 output=error(identifier,-32602,'Invalid initialization params')
             else:
                 initialized=True; ready=False
-                output={'jsonrpc':'2.0','id':identifier,'result':{'protocolVersion':'2025-11-25','capabilities':{'tools':{'listChanged':False}},'serverInfo':{'name':'court-auction-mcp','version':'0.2.0'},'instructions':'비공식 연동. partial/reason과 coverage를 확인하세요. 차단 후 재요청·우회 금지.'}}
+                output={'jsonrpc':'2.0','id':identifier,'result':{'protocolVersion':'2025-11-25','capabilities':{'tools':{'listChanged':False}},'serverInfo':{'name':'court-auction-mcp','version':'0.2.1'},'instructions':'비공식 연동. partial/reason과 coverage를 확인하세요. 차단 후 재요청·우회 금지.'}}
         elif method=='ping':
             output={'jsonrpc':'2.0','id':identifier,'result':{}}
         elif not ready:
