@@ -31,7 +31,7 @@ class Client:
         self.store, self.job_id = store, job_id
         self.clock, self.sleep = clock, sleep
         self.http = httpx.Client(transport=transport, timeout=25, follow_redirects=False,
-            headers={'User-Agent':'court-auction-mcp/0.2.1 (+https://github.com/solid-hwan/court-auction-mcp)', 'Accept-Language':'ko-KR'})
+            headers={'User-Agent':'court-auction-mcp/0.2.1 (+https://github.com/solid-hwan/court-auction-collector)', 'Accept-Language':'ko-KR'})
         self.ready = False
         self.stopped = False
 

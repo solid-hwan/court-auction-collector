@@ -13,7 +13,7 @@ flowchart LR
 
 ## 설치
 
-[GitHub 릴리스](https://github.com/solid-hwan/court-auction-mcp/releases/tag/v0.2.1)의 ZIP과 SHA-256 파일을 받아 해시를 확인하고 압축을 풉니다. PyPI 배포는 하지 않습니다.
+[GitHub 릴리스](https://github.com/solid-hwan/court-auction-collector/releases/tag/v0.2.1)의 ZIP과 SHA-256 파일을 받아 해시를 확인하고 압축을 풉니다. PyPI 배포는 하지 않습니다.
 
 ```bash
 cd court-auction-mcp-0.2.1
