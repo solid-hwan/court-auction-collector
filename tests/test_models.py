@@ -68,7 +68,7 @@ class ModelTests(unittest.TestCase):
         q=query({**QUERY,'court':None,'region':'11','district':'11110','usage':'land','appraisal_min':1,'appraisal_max':10,'minimum_min':0,'minimum_max':5,'failures_min':1,'failures_max':3})
         body=search_body(q,2)
         f=body['dma_srchGdsDtlSrchInfo']
-        self.assertEqual(f['rprsAdongSggCd'],'11110'); self.assertEqual(f['lclDspslGdsLstUsgCd'],'10000')
+        self.assertEqual(f['rprsAdongSggCd'],'110'); self.assertEqual(f['lclDspslGdsLstUsgCd'],'10000')
         self.assertEqual(f['aeeEvlAmtMax'],'10'); self.assertEqual(f['lwsDspslPrcMin'],'0'); self.assertEqual(f['flbdNcntMax'],'3')
         self.assertEqual(body['dma_pageInfo']['pageNo'],2)
 

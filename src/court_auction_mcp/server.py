@@ -19,7 +19,7 @@ def obj(properties=None, required=()):
 JOB={'type':'string','pattern':'^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$'}
 LIMIT={'type':'integer','minimum':1,'description':'초기 연결·재시도 포함 누적 한도. 신규 기본 10.'}
 SCHEMAS={
-    'auction_codes':obj(),
+    'auction_codes':obj({'region':{'type':'string','description':'시도 코드/이름. 생략 시 오프라인 목록, 지정 시 공식 시군구 목록 조회.'},'max_calls':LIMIT}),
     'auction_search':obj({'query':QUERY,'page':{'type':'integer','minimum':1,'default':1},'max_calls':LIMIT},('query',)),
     'auction_detail':obj({'court':{'type':'string'},'case':{'type':'string'},'max_calls':LIMIT},('court','case')),
     'auction_collect':obj({'job_id':JOB,'query':QUERY,'max_calls':LIMIT,'max_pages':{'type':'integer','minimum':1,'maximum':1000,'default':1}},('job_id',)),
@@ -33,7 +33,7 @@ METHODS['auction_job_status']='status'
 
 
 def tools():
-    return [{'name':name,'description':DESCRIPTIONS[name],'inputSchema':schema,'annotations':{'readOnlyHint':name in ('auction_codes','auction_coverage','auction_job_status'),'destructiveHint':False,'openWorldHint':name in ('auction_search','auction_detail','auction_collect')}} for name,schema in SCHEMAS.items()]
+    return [{'name':name,'description':DESCRIPTIONS[name],'inputSchema':schema,'annotations':{'readOnlyHint':name in ('auction_coverage','auction_job_status'),'destructiveHint':False,'openWorldHint':name in ('auction_codes','auction_search','auction_detail','auction_collect')}} for name,schema in SCHEMAS.items()]
 
 
 def call(service, name, arguments):
@@ -70,7 +70,7 @@ def serve(service, stdin=None, stdout=None):
                 output=error(identifier,-32602,'Invalid initialization params')
             else:
                 initialized=True; ready=False
-                output={'jsonrpc':'2.0','id':identifier,'result':{'protocolVersion':'2025-11-25','capabilities':{'tools':{'listChanged':False}},'serverInfo':{'name':'court-auction-mcp','version':'0.1.0'},'instructions':'비공식 연동. partial/reason과 coverage를 확인하세요. 차단 후 재요청·우회 금지.'}}
+                output={'jsonrpc':'2.0','id':identifier,'result':{'protocolVersion':'2025-11-25','capabilities':{'tools':{'listChanged':False}},'serverInfo':{'name':'court-auction-mcp','version':'0.2.0'},'instructions':'비공식 연동. partial/reason과 coverage를 확인하세요. 차단 후 재요청·우회 금지.'}}
         elif method=='ping':
             output={'jsonrpc':'2.0','id':identifier,'result':{}}
         elif not ready:

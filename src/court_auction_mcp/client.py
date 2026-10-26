@@ -1,6 +1,7 @@
 """비공식 법원 JSON 전송. 차단을 우회하거나 응답 원문을 로그에 쓰지 않는다."""
 from __future__ import annotations
 import re
+import json
 import time
 import httpx
 from .models import AuctionError
@@ -16,7 +17,7 @@ def blocked_json(value):
         for k,v in value.items():
             if k.lower() == 'ipcheck' and (v is False or str(v).lower()=='false'):
                 return True
-            if k.lower() in ('captcha','captcharequired') and v not in (False,None,'',0,'false'):
+            if k.lower() in ('captcha','captcharequired') and v not in (False,None,'',0) and str(v).lower() != 'false':
                 return True
             if blocked_json(v):
                 return True
@@ -30,7 +31,7 @@ class Client:
         self.store, self.job_id = store, job_id
         self.clock, self.sleep = clock, sleep
         self.http = httpx.Client(transport=transport, timeout=25, follow_redirects=False,
-            headers={'User-Agent':'court-auction-mcp/0.1.0 (+https://github.com/solid-hwan/court-auction-mcp)', 'Accept-Language':'ko-KR'})
+            headers={'User-Agent':'court-auction-mcp/0.2.0 (+https://github.com/solid-hwan/court-auction-mcp)', 'Accept-Language':'ko-KR'})
         self.ready = False
         self.stopped = False
 
@@ -63,11 +64,20 @@ class Client:
                             if len(content)>10*1024*1024:
                                 raise AuctionError('response_too_large')
                         text = bytes(content).decode('utf-8',errors='replace')
-                        # 토큰·쿠키·관계인 정보가 포함될 수 있으므로 본문을 오류에 넣지 않는다.
-                        if re.search(r'captcha|자동입력\s*방지|접근.{0,12}차단|access denied|ipcheck[\s"\x27:=]+false',text,re.I):
+                        # JSON 업무 필드의 단어는 차단 화면이 아니다. 구조화된 제어값부터 판정한다.
+                        try:
+                            data=json.loads(text)
+                            is_json=True
+                        except (ValueError,UnicodeError):
+                            data=None; is_json=False
+                        envelope = ''
+                        if isinstance(data,dict):
+                            envelope=' '.join(str(data.get(k,'')) for k in ('message','error','errorMessage'))
+                        signals = envelope if is_json else text
+                        if blocked_json(data) or (isinstance(data,dict) and data.get('status') in (401,403,429,'401','403','429')) or re.search(r'captcha|자동입력\s*방지|접근.{0,12}차단|access denied|ipcheck[\s"\x27:=]+false',signals,re.I):
                             self.store.block('access_challenge')
                             raise AuctionError('blocked')
-                        if any(k in text for k in ('시스템 작업 안내','서비스 일시 중단','시스템 점검','유지보수')):
+                        if any(k in signals for k in ('시스템 작업 안내','서비스 일시 중단','시스템 점검','유지보수')):
                             raise AuctionError('maintenance')
                         if response.status_code>=500:
                             if attempt==0:
@@ -77,14 +87,8 @@ class Client:
                             raise AuctionError('http_'+str(response.status_code))
                         if initial:
                             return None
-                        try:
-                            import json
-                            data = json.loads(text)
-                        except (ValueError,UnicodeError):
-                            raise AuctionError('schema_changed') from None
-                        if blocked_json(data):
-                            self.store.block('ipcheck_or_captcha')
-                            raise AuctionError('blocked')
+                        if not is_json:
+                            raise AuctionError('schema_changed')
                         return data
             except (httpx.TimeoutException,httpx.NetworkError) as error:
                 # 인증서 검증 오류는 일시적 네트워크 장애가 아니다.
@@ -115,3 +119,8 @@ class Client:
     def detail(self, court, case):
         self.initialize()
         return self.request('POST',DETAIL,body={'dma_srchCsDtlInf':{'cortOfcCd':court,'csNo':case}},submission='mf_wfm_mainFrame_sbm_selectCsDtlInf')
+
+
+    def districts(self, region):
+        self.initialize()
+        return self.request('POST',BASE+'/pgj/pgj002/selectAdongSggLst.on',body={'pbancMidYn':'N','srchDvsCd':'B','pbancDvsCd':'B','adongSdCd':region})

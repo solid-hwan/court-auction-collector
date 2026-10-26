@@ -12,7 +12,29 @@
   ],
   "full_collection": "unverified",
   "all_courts": "unverified",
-  "region_and_subusage_filters": "unverified",
-  "reason": "제한된 법원·기간의 검증이며 전국·전체수집·지역/세부용도 조건의 실조회는 미검증.",
-  "required_live_checks_passed": true
+  "region_and_subusage_filters": "region: limited pass (11/11680 and 41/41135); subusage: unverified",
+  "reason": "제한된 법원·지역·기간 검증. 전국·전체수집·세부용도는 미검증.",
+  "required_live_checks_passed": true,
+  "local_improvements": {
+    "date": "2026-10-26",
+    "publication": "included in v0.2.0",
+    "district_codes": {
+      "11": 25,
+      "41": 57
+    },
+    "gangnam": {
+      "saved_objects": 20,
+      "pages": 2,
+      "filters": "region, district, dates, appraisal_min, minimum_min, failures_min verified"
+    },
+    "bundang": {
+      "search_objects": 10,
+      "saved_objects": 10,
+      "filters": "region, district, dates verified"
+    },
+    "requests_including_static_init_and_failed_request": 20,
+    "failed_request": "one transport_error with unsupported 5-digit upstream district before correction; no block response; no retry of that failed request",
+    "whole_collection": "unverified",
+    "windows": "unverified"
+  }
 }

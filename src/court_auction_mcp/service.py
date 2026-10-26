@@ -29,12 +29,16 @@ class AuctionService:
             self._store=Store(self.db)
         return self._store
 
-    def codes(self):
-        return {'ok':True,'courts':[{'code':k,'name':v} for k,v in COURTS.items()], 'regions':REGIONS,'usage':USES,'court_snapshot':'2026-04-19','district_note':'시군구 5자리 행정구역 코드; 현재 하위 코드 목록 실조회 미제공','usage_note':'usage=all은 토지+건물. usage_mid/usage_small은 공식 사이트에서 확인한 5자리 코드 입력; 하위 코드 목록 미제공.'}
+    def codes(self, region=None, max_calls=10):
+        if region is not None:
+            from .regions import region_id, map_districts
+            region=region_id(region)
+            return self._single('codes',{'region':region},max_calls,lambda c:map_districts(c.districts(region),region))
+        return {'ok':True,'courts':[{'code':k,'name':v} for k,v in COURTS.items()], 'regions':REGIONS,'usage':USES,'court_snapshot':'2026-04-19','district_note':'codes(region=시도코드 또는 이름)으로 공식 시군구 목록 조회. 초기 연결 포함 요청 한도 적용.','usage_note':'usage=all은 토지+건물. usage_mid/usage_small은 공식 사이트에서 확인한 5자리 코드 입력; 하위 코드 목록 미제공.'}
 
     def coverage(self):
         live=json.loads(files(__package__).joinpath('live_verification.json').read_text('utf-8'))
-        return {'ok':True,'version':'0.1.0','integration':'unofficial_internal_json','supported':['codes','search','detail_15A','collect','status','export_jsonl_csv_xlsx','resume'], 'excluded':['15B','photos','documents','vehicles','onbid','rights_analysis','investment_advice','bidding'], 'minimum_interval_seconds':3,'default_max_calls':10,'live_verification':live}
+        return {'ok':True,'version':'0.2.0','integration':'unofficial_internal_json','supported':['codes','search','detail_15A','collect','status','export_jsonl_csv_xlsx','resume','district_codes_live','region_folders','guide'], 'excluded':['15B','photos','documents','vehicles','onbid','rights_analysis','investment_advice','bidding'], 'minimum_interval_seconds':3,'default_max_calls':10,'live_verification':live}
 
     def _single(self, kind, q, max_calls, operation):
         positive(max_calls,'max_calls')
@@ -68,8 +72,11 @@ class AuctionService:
         self.store.create(job_id,q,max_calls)
         with self.store.job_lock(job_id):
             state=self.store.status(job_id)
-            if state['status'] in ('complete','blocked','schema_changed','repeated_page','source_changed','detail_identity_mismatch','court_identity_mismatch') or state['host_blocked']:
+            if state['status'] in ('complete','blocked','schema_changed','repeated_page','source_changed','detail_identity_mismatch','court_identity_mismatch') or state['status'].startswith('filter_mismatch_') or state['host_blocked']:
                 return state
+            if state['query'].get('region') and state['saved_count'] and any('filter_check' not in row for row in self.store.records(job_id)):
+                self.store.mark(job_id,'legacy_region_job','legacy_region_job_requires_new_job')
+                return self.store.status(job_id)
             q=state['query']
             client=self.client_factory(self.store,job_id)
             try:
@@ -95,7 +102,7 @@ class AuctionService:
         name=name or job_id+'-'+uuid.uuid4().hex[:8]
         if not isinstance(name,str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,100}',name):
             raise AuctionError('invalid_export_name')
-        return export_records(self.store.records(job_id),self.export_root/name,state)
+        return export_records(self.store.records(job_id),self.export_root/name,state,by_region=True)
 
     def call(self, name, arguments=None):
         methods={'codes':self.codes,'search':self.search,'detail':self.detail,'collect':self.collect,'status':self.status,'export':self.export,'coverage':self.coverage}

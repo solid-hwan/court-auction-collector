@@ -94,12 +94,15 @@ def query(value):
     if not isinstance(value, dict) or set(value) - QUERY_FIELDS:
         raise AuctionError('invalid_query_fields')
     q = {'court':None,'region':None,'district':None,'usage':'all','usage_mid':None,'usage_small':None,'page_size':10, **value}
+    if q['court'] and q['region']:
+        raise AuctionError('court_and_region_are_alternative_modes')
     if not q['court'] and not q['region']:
         raise AuctionError('court_or_region_required')
     if q['court']:
         q['court'] = court_id(q['court'])
-    if q['region'] is not None and q['region'] not in REGIONS:
-        raise AuctionError('invalid_region')
+    if q['region'] is not None:
+        from .regions import region_id
+        q['region'] = region_id(q['region'])
     if q['district'] is not None and (not q['region'] or not isinstance(q['district'], str) or not re.fullmatch(r'[0-9]{5}', q['district']) or not q['district'].startswith(q['region'])):
         raise AuctionError('invalid_district')
     if q['usage'] not in USES:
@@ -134,10 +137,12 @@ def search_body(q, page):
         for suffix in ('min','max'):
             v = q[prefix+'_'+suffix]
             fields[target+suffix.title()] = '' if v is None else str(v)
+    fields['cortStDvs'] = '2' if q['region'] else '1'
+    fields['rprsAdongSggCd'] = q['district'][2:] if q['district'] else ''
     return {'dma_pageInfo':{'pageNo':page,'pageSize':q['page_size'],'bfPageNo':'','startRowNo':'','totalCnt':'','totalYn':'Y','groupTotalCount':''}, 'dma_srchGdsDtlSrchInfo':fields}
 
 
-SEARCH_FIELDS = ('srnSaNo','jiwonCd','cortOfcCd','jiwonNm','maemulSer','mokmulSer','gamevalAmt','notifyMinmaePrice1','minmaePrice','yuchalCnt','maeGiil','maeHh1','lclsUtilCd','dspslUsgNm','bgPlaceRdAllAddr','hjguSido','hjguSigu','hjguDong','rdNm','buldNo','daepyoLotno','buldNm','buldList')
+SEARCH_FIELDS = ('srnSaNo','jiwonCd','cortOfcCd','jiwonNm','maemulSer','mokmulSer','gamevalAmt','notifyMinmaePrice1','minmaePrice','yuchalCnt','maeGiil','maeHh1','lclsUtilCd','dspslUsgNm','bgPlaceRdAllAddr','daepyoSidoCd','daepyoSiguCd','rprsAdongSdCd','rprsAdongSggCd','hjguSido','hjguSigu','hjguDong','rdNm','buldNo','daepyoLotno','buldNm','buldList')
 
 
 def parsed_fields(raw, mapping):
@@ -171,6 +176,11 @@ def map_item(row, requested_court=None):
                       property_kind={'10000':'land','20000':'building'}.get(raw.get('lclsUtilCd')), usage=raw.get('dspslUsgNm'))
     if normalized['property_kind'] is None:
         reasons['property_kind'] = 'missing_or_unknown_classification'
+    from .regions import location
+    normalized.update(location(raw))
+    for field in ('region_code','district_code','region_name','district_name','address'):
+        if normalized[field] is None:
+            reasons[field] = 'missing_or_unknown_location'
     key = f'{court}|{cs}|{mae}|{mok}'
     return {'item_key':key, 'normalized':normalized, 'missing_reasons':reasons, 'raw':raw}
 
@@ -196,7 +206,9 @@ def map_search(body, q, page):
     total_raw = (pageinfo or {}).get('totalCnt')
     total = number(total_raw)
     records = [map_item(row,q['court']) for row in rows]
-    return {'ok':True,'status':'empty' if not rows else 'page','records':records,'page':page,'page_size':q['page_size'],'read_count':len(rows), 'source_total_count':total,'source_total_raw':scalar(total_raw),'source_total_reason':None if total is not None else ('missing_source_value' if total_raw in (None,'') else 'invalid_source_value'),'query':q,'snapshot_guarantee':False,'usage_filter_scope':'sale_item_with_associated_objects'}
+    for record in records:
+        record['filter_check'] = check_filters(record,q)
+    return {'ok':True,'status':'empty' if not rows else 'page','records':records,'page':page,'page_size':q['page_size'],'read_count':len(rows), 'source_total_count':total,'source_total_raw':scalar(total_raw),'source_total_reason':None if total is not None else ('missing_source_value' if total_raw in (None,'') else 'invalid_source_value'),'query':q,'snapshot_guarantee':False,'usage_filter_scope':'sale_item_with_associated_objects','filters_verified':all(not r['filter_check']['unverified'] for r in records)}
 
 
 BASIC_FIELDS = ('cortOfcCd','csNo','csNm','csRcptYmd','csCmdcYmd','csProgStatCd','csUltmtYmd','mvprpRletDvsCd')
@@ -246,3 +258,24 @@ def map_detail(body, court, cs):
                         reasons[field] = 'missing_or_invalid_source_value'
             result[target].append({'raw':raw,'normalized':normalized,'missing_reasons':reasons})
     return result
+
+
+def check_filters(record, q):
+    """불일치는 페이지 전체를 중단. 누락은 미확인으로 남기며 추정하지 않는다."""
+    n=record['normalized']; unknown=[]
+    checks=[('sale_date',q['start'],q['end'])]
+    for prefix,field in [('appraisal','appraisal_price'),('minimum','minimum_price'),('failures','fail_count')]:
+        if q[prefix+'_min'] is not None or q[prefix+'_max'] is not None:
+            checks.append((field,q[prefix+'_min'],q[prefix+'_max']))
+    for field in ('region','district'):
+        if q[field]: checks.append((field+'_code',q[field],q[field]))
+    for field,lo,hi in checks:
+        value=n.get(field)
+        if value is None:
+            unknown.append(field)
+        elif (lo is not None and value<lo) or (hi is not None and value>hi):
+            raise AuctionError('filter_mismatch_'+field)
+    # 용도는 매각물건 기준. 함께 매각되는 토지/건물 목적물은 서로 다를 수 있다.
+    if q['usage']!='all' or q['usage_mid'] or q['usage_small']:
+        unknown.append('sale_item_usage')
+    return {'unverified':unknown,'status':'unverified' if unknown else 'verified'}

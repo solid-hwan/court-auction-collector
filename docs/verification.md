@@ -31,3 +31,10 @@
 | 새 ZIP·빈 가상환경 설치·예제·전체 시험 | Python 3.12.3, 51개 통과·가상 2행/세 형식 복원·CLI/stdio 통과 |
 | GitHub Python 3.11·3.12 | [각 51개 × 2회, 예제·CLI 통과](https://github.com/solid-hwan/court-auction-mcp/actions/runs/40265405436) |
 | 공개 ZIP 다운로드 SHA-256 | [v0.1.0 릴리스의 최종 검증 결과·해시 파일](https://github.com/solid-hwan/court-auction-mcp/releases/tag/v0.1.0) 참조 |
+
+
+## v0.2.0 지역 선택·지역별 저장
+
+[지역 요청 수정·실조회 근거](regional-verification.md)를 참고하세요. v0.2.0 소스와 ZIP에 포함됩니다. 기존 v0.1.0 검증 수치와 구분합니다.
+
+지역 개선 기능은 Python 3.11.13에서 66개, 새 ZIP을 설치한 Python 3.12.3에서 66개 시험을 통과했습니다. 시군구 선택·예산·지역별 분류·Excel/CSV 복원·오탐 수정이 포함됩니다. 공개 커밋의 CI 결과와 최종 ZIP 해시는 [v0.2.0 릴리스](https://github.com/solid-hwan/court-auction-mcp/releases/tag/v0.2.0)에 연결합니다.

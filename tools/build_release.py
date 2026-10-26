@@ -8,7 +8,7 @@ import zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
 TOP=('README.md','AGENTS.md','CLAUDE.md','CONTRIBUTING.md','LICENSE','NOTICE.md','CHANGELOG.md','pyproject.toml','requirements.lock','setup-lab.py','.gitignore')
-PATTERNS=('src/**/*.py','src/**/*.json','tests/*.py','examples/*.py','examples/*.json','examples/*.md','docs/*.md','docs/*.json','tools/*.py','.github/workflows/*.yml')
+PATTERNS=('지역별/*.py','지역별/*.md','src/**/*.py','src/**/*.json','tests/*.py','examples/*.py','examples/*.json','examples/*.md','docs/*.md','docs/*.json','tools/*.py','.github/workflows/*.yml')
 
 
 def selected_files():

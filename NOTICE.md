@@ -17,3 +17,6 @@ Copyright (c) 2026 SIONLAB. 이 패키지 코드는 MIT 라이선스입니다.
 의존성은 httpx(BSD-3-Clause), httpcore(BSD-3-Clause), h11(MIT), anyio(MIT), idna(BSD-3-Clause), certifi(MPL-2.0), openpyxl(MIT), et-xmlfile(MIT), typing-extensions(PSF-2.0)입니다. 빌드 도구 setuptools(MIT)·wheel(MIT)을 사용합니다. ZIP은 라이브러리 바이너리를 재배포하지 않으며 설치 시 각 배포본의 라이선스가 함께 설치됩니다.
 
 법원 사이트 원자료의 권리·이용 조건은 이 코드의 MIT 라이선스와 별개입니다. 이 도구가 원자료의 재배포 권한을 부여하지 않습니다. 비공식 내부 JSON 연동이며 법원 공식 오픈API가 아닙니다. [법원 이용안내](https://openapi.scourt.go.kr/kgso202m01.do)는 2026-10-26 확인 시 일반 오픈API를 추후 업데이트 예정으로 설명합니다. 실제 입찰 전 [대한민국법원 법원경매정보](https://www.courtauction.go.kr) 원문을 다시 확인하세요.
+
+
+지역 개선본은 공식 공개 UI의 요청 모드와 코드 구조를 대조하여 독립 구현했습니다. 원본 프로젝트는 변경하지 않았으며 공식 UI 원문은 패키지에 복제하지 않습니다. 확인 출처와 해시는 [지역 검증 기록](docs/regional-verification.md)에 있습니다.

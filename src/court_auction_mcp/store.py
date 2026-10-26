@@ -74,6 +74,8 @@ class Store:
             out = dict(row)
             out['query'] = json.loads(out['query'])
             out['saved_count'] = db.execute('SELECT COUNT(*) FROM records WHERE job_id=?',(job_id,)).fetchone()[0]
+            out['unverified_count'] = db.execute("SELECT COUNT(*) FROM records WHERE job_id=? AND COALESCE(json_extract(data,'$.filter_check.status'),'unverified')!='verified'",(job_id,)).fetchone()[0]
+            out['filters_verified'] = out['saved_count']>0 and out['unverified_count']==0
             out['failures'] = [dict(r) for r in db.execute('SELECT page,reason,at FROM failures WHERE job_id=? ORDER BY at DESC LIMIT 20',(job_id,))]
             out['host_blocked'] = db.execute('SELECT blocked FROM control WHERE id=1').fetchone()[0]
         out.update(ok=True,job_id=out.pop('id'),partial=out['status']!='complete',snapshot_guarantee=False)

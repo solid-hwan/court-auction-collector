@@ -2,9 +2,43 @@
   "status": 200,
   "data": {
     "dlt_srchResult": [
-      {"srnSaNo":"2099타경123","jiwonNm":"서울중앙지방법원","maemulSer":"1","mokmulSer":"1","gamevalAmt":"100000000","notifyMinmaePrice1":"80000000","yuchalCnt":"1","maeGiil":"20261030","lclsUtilCd":"10000","dspslUsgNm":"가상 주택의 토지","bgPlaceRdAllAddr":"가상주소"},
-      {"srnSaNo":"2099타경123","jiwonNm":"서울중앙지방법원","maemulSer":"1","mokmulSer":"2","gamevalAmt":"100000000","notifyMinmaePrice1":"80000000","yuchalCnt":"1","maeGiil":"20261030","lclsUtilCd":"20000","dspslUsgNm":"가상 주택의 건물","bgPlaceRdAllAddr":"가상주소"}
+      {
+        "srnSaNo": "2099타경123",
+        "jiwonNm": "서울중앙지방법원",
+        "maemulSer": "1",
+        "mokmulSer": "1",
+        "gamevalAmt": "100000000",
+        "notifyMinmaePrice1": "80000000",
+        "yuchalCnt": "1",
+        "maeGiil": "20261030",
+        "lclsUtilCd": "10000",
+        "dspslUsgNm": "가상 주택의 토지",
+        "bgPlaceRdAllAddr": "서울특별시 강남구 가상로 0 (가상 예제)",
+        "daepyoSidoCd": "11",
+        "daepyoSiguCd": "680",
+        "hjguSido": "서울특별시",
+        "hjguSigu": "강남구"
+      },
+      {
+        "srnSaNo": "2099타경123",
+        "jiwonNm": "서울중앙지방법원",
+        "maemulSer": "1",
+        "mokmulSer": "2",
+        "gamevalAmt": "100000000",
+        "notifyMinmaePrice1": "80000000",
+        "yuchalCnt": "1",
+        "maeGiil": "20261030",
+        "lclsUtilCd": "20000",
+        "dspslUsgNm": "가상 주택의 건물",
+        "bgPlaceRdAllAddr": "서울특별시 강남구 가상로 0 (가상 예제)",
+        "daepyoSidoCd": "11",
+        "daepyoSiguCd": "680",
+        "hjguSido": "서울특별시",
+        "hjguSigu": "강남구"
+      }
     ],
-    "dma_pageInfo": {"totalCnt":"2"}
+    "dma_pageInfo": {
+      "totalCnt": "2"
+    }
   }
 }
