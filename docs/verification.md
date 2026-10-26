@@ -23,11 +23,11 @@
 
 첫 시험에서 Excel 원문은 복원됐으나 Python CSV 읽기의 기본 128KiB 제한을 발견했다. `restore_csv()`를 추가하고 제어문자·유니코드가 있는 128KiB 초과 행의 JSONL/CSV/XLSX 일치를 확인했다.
 
-최종 반복 시험·새 ZIP 설치·GitHub CI·공개 다운로드 검증 결과는 공개 전 아래 표에 기록한다. 이 문서의 실조회는 당시 제한된 범위의 관측이며 정상 동작을 지속 보장하지 않는다.
+최종 반복 시험·새 ZIP 설치·GitHub CI의 실제 결과는 아래 표에 기록했다. 공개 ZIP 무결성 대조 결과와 최종 파일 SHA-256은 릴리스 설명과 첨부 해시 파일에서 확인한다. 이 문서의 실조회는 당시 제한된 범위의 관측이며 정상 동작을 지속 보장하지 않는다.
 
 | 점검 | 상태 |
 |---|---|
 | 최종 전체 시험 2회 | Python 3.11.13, 51개 × 2회 통과 |
 | 새 ZIP·빈 가상환경 설치·예제·전체 시험 | Python 3.12.3, 51개 통과·가상 2행/세 형식 복원·CLI/stdio 통과 |
-| GitHub Python 3.11·3.12 | 공개 후 확인 예정 |
-| 공개 ZIP 다운로드 SHA-256 | 릴리스 후 확인 예정 |
+| GitHub Python 3.11·3.12 | [각 51개 × 2회, 예제·CLI 통과](https://github.com/solid-hwan/court-auction-mcp/actions/runs/40265405436) |
+| 공개 ZIP 다운로드 SHA-256 | [v0.1.0 릴리스의 최종 검증 결과·해시 파일](https://github.com/solid-hwan/court-auction-mcp/releases/tag/v0.1.0) 참조 |
